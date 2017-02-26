@@ -1,11 +1,19 @@
+import java.awt.AWTEvent;
 import java.awt.Color;
+import java.awt.Scrollbar;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
+import javax.swing.Scrollable;
 
 import ij.*;
+import ij.gui.DialogListener;
+import ij.gui.GenericDialog;
 import ij.gui.HistogramWindow;
 import ij.gui.NewImage;
+import ij.gui.NonBlockingGenericDialog;
 import ij.gui.Roi;
 import ij.measure.ResultsTable;
 import ij.plugin.*;
@@ -14,11 +22,13 @@ import ij.plugin.frame.RoiManager;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 
-public class UV_Characterization implements PlugInFilter {
+public class UV_Characterization implements PlugInFilter, DialogListener {
 	
 	private List<Measurment> measurments;
 	
 	private ImagePlus imp;
+	
+	private int nbClasses;
 
 	public UV_Characterization() {
 		
@@ -86,6 +96,20 @@ public class UV_Characterization implements PlugInFilter {
     		
     		
     		HistogramWindow histo = new HistogramWindow("Means histogram", imp3, 256);
+    		
+    		/* ------ */
+    		
+    		/* NB DE CLASSES */
+    		NonBlockingGenericDialog dial1 = new NonBlockingGenericDialog("Segmentation classes");			
+    		dial1.addSlider ("Number of classes", 1,3,2);
+    		dial1.addDialogListener(this);
+    		dial1.showDialog();
+    		if(dial1.wasCanceled()){
+    			histo.close();
+    			roi.close();
+    			return;
+    		}
+    		/* ------ */
 	    	
 			/*roi.setSelectedIndexes(roi.getIndexes());
 			roi.runCommand("Set Fill Color", "yellow");
@@ -101,6 +125,19 @@ public class UV_Characterization implements PlugInFilter {
 			
     		
     		
+	}
+
+	@Override
+	public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
+		Vector sliders = gd.getSliders();
+		if(gd.getTitle() == "Segmentation classes"){
+			Scrollbar s = (Scrollbar)sliders.get(0);
+			nbClasses = s.getValue();
+			imp.close();
+			IJ.log(nbClasses + "");
+		}
+		
+		return true;
 	}
 
 
