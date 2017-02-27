@@ -14,6 +14,7 @@ import ij.gui.GenericDialog;
 import ij.gui.HistogramWindow;
 import ij.gui.NewImage;
 import ij.gui.NonBlockingGenericDialog;
+import ij.gui.Roi;
 import ij.measure.Measurements;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.PlugInFilter;
@@ -40,6 +41,10 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 	
 	private int threshold[];
 
+	private String directory;
+
+	private String name;
+
 	public UV_Characterization() {
 		
 		measurments = new ArrayList<Measurment>();
@@ -62,6 +67,12 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 			IJ.error("this plugin requires an ROI image");
 		}
 		*/
+		
+		if(imp != null){
+			directory = imp.getOriginalFileInfo().directory;
+			name      = imp.getTitle();
+		}
+		
 		return DOES_RGB;
 	}
 	
@@ -69,8 +80,9 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 	public void run(ImageProcessor arg0) {
         
         	
-        	IJ.open("/home/hassan/Documents/ZZ3/PROJET-ANNEE/PROJET/MYSAMPLE/SEQUENCe/SEQ/E-2/RoiSet.zip");
-        	imp = IJ.openImage("/home/hassan/Documents/ZZ3/PROJET-ANNEE/PROJET/MYSAMPLE/SEQUENCe/SEQ/E-2/b-contrasted-roi-overlay.tif");
+        	IJ.open(directory + "RoiSet.zip");
+        	imp = IJ.openImage(directory + name);
+        	//imp.addImageListener(this);
     		rm = RoiManager.getRoiManager();
     		
     		// Get measurments from roi manager
@@ -83,17 +95,20 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
     		makeHistogram();
     		
     		// Determine number of classes
-    		showNumberOfClassesDialog();
+    		if(!showNumberOfClassesDialog())
+    			return;
     		
     		// Choose threshold of each class
     		NonBlockingGenericDialog dial2 = null;
     		switch (nbClasses) {
 				case 2:
-		    		showOneThresholdSlider(dial2);
+		    		if(!showOneThresholdSlider(dial2))
+		    			return;
 					break;
 
 				case 3:
-		    		showTwoThresholdSlider(dial2);
+		    		if(!showTwoThresholdSlider(dial2))
+		    			return;
 					break;
 			}
 
@@ -104,8 +119,11 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
     		// Color Cells
     		colorClasses();			
 			
-    		
-    		
+    		// Show Result
+    		rm.close();
+    		histo.close();
+    		imp.show();
+  
 	}
 	
 	public void fillMeasurments(){
@@ -168,21 +186,21 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 		
 	}
 
-	private void showNumberOfClassesDialog() {
+	private Boolean showNumberOfClassesDialog() {
 		
 		NonBlockingGenericDialog dial1 = new NonBlockingGenericDialog("Segmentation classes");			
 		dial1.addSlider ("Number of classes", 1,3,2);
 		dial1.addDialogListener(this);
 		dial1.showDialog();
 		if(dial1.wasCanceled()){
-			histo.close();
-			rm.close();
-			return;
+			closeProcess();
+			return false;
 		}
-		
+		return true;
 	}
+	
 
-	private void showTwoThresholdSlider(NonBlockingGenericDialog dial2) {
+	private Boolean showTwoThresholdSlider(NonBlockingGenericDialog dial2) {
 		
 		dial2 = new NonBlockingGenericDialog("Threshold-2");			
 		dial2.addSlider(
@@ -201,12 +219,20 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 		dial2.showDialog();
 		
 		if(dial2.wasCanceled()){
-			return;
+			closeProcess();
+			return false;
 		}
+		return true;
 		
 	}
+	
+	void closeProcess(){
+		histo.close();
+		rm.close();
+		imp.close();
+	}
 
-	private void showOneThresholdSlider(NonBlockingGenericDialog dial2) {
+	private Boolean showOneThresholdSlider(NonBlockingGenericDialog dial2) {
 		dial2 = new NonBlockingGenericDialog("Threshold-1");			
 		dial2.addSlider("Classes Separator value", 
 						Measurment.minMean,
@@ -216,8 +242,11 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 		dial2.showDialog();
 		
 		if(dial2.wasCanceled()){
-			return;
+			closeProcess();
+			return false;
 		}
+		
+		return true;
 			
 	}
 
@@ -262,6 +291,28 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 			}
 
 		return true;
+	}
+
+	
+	public void imageClosed(ImagePlus arg0) {
+		
+		if(histo != null )
+			histo.close();
+		if(rm != null)
+			rm.close();
+		
+	}
+
+	
+	public void imageOpened(ImagePlus arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	public void imageUpdated(ImagePlus arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
@@ -400,4 +451,6 @@ class Classe {
 	}
 	
 }
+
+
 
