@@ -12,9 +12,11 @@ import ij.*;
 import ij.gui.DialogListener;
 import ij.gui.GenericDialog;
 import ij.gui.HistogramWindow;
+import ij.gui.MessageDialog;
 import ij.gui.NewImage;
 import ij.gui.NonBlockingGenericDialog;
 import ij.gui.Roi;
+import ij.io.Opener;
 import ij.measure.Measurements;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.PlugInFilter;
@@ -73,17 +75,23 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 			name      = imp.getTitle();
 		}
 		
-		return DOES_RGB;
+		return DOES_8G;
 	}
 	
 	@Override
 	public void run(ImageProcessor arg0) {
         
-        	
-        	IJ.open(directory + "RoiSet.zip");
+        	// Import ROI sets file and get ROI Manager
+			MessageDialog md = new MessageDialog(null, "Import ROI Sets", "Please import ROI Sets zip");
+			//md.show();
+			//if (md.wasCanceled()) return;
+			Opener io = new Opener();
+			io.open();
+			rm = RoiManager.getRoiManager();
+			
+			// Get a duplicate image
         	imp = IJ.openImage(directory + name);
-        	//imp.addImageListener(this);
-    		rm = RoiManager.getRoiManager();
+    		
     		
     		// Get measurments from roi manager
     		fillMeasurments();
