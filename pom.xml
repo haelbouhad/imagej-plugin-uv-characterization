@@ -13,7 +13,7 @@
 	</parent>
 
 	<groupId>fr.isima.inra</groupId>
-	<artifactId>Cells_characterization</artifactId>
+	<artifactId>UV_characterization</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
 	<name>Cells_characterization</name>

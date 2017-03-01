@@ -1,11 +1,25 @@
-package main.java.fr.isima.inra;
+package fr.isima.inra;
 
 import java.awt.AWTEvent;
-import java.awt.Color;
 import java.awt.Scrollbar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import ij.IJ;
+import ij.ImagePlus;
+import ij.gui.DialogListener;
+import ij.gui.GenericDialog;
+import ij.gui.HistogramWindow;
+import ij.gui.MessageDialog;
+import ij.gui.NewImage;
+import ij.gui.NonBlockingGenericDialog;
+import ij.io.Opener;
+import ij.measure.ResultsTable;
+import ij.plugin.filter.PlugInFilter;
+import ij.plugin.frame.RoiManager;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
 
 
 public class UV_Characterization implements PlugInFilter, DialogListener {
