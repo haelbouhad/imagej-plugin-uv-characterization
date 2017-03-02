@@ -2,7 +2,9 @@ package fr.isima.inra;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
+import ij.plugin.ImageCalculator;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
@@ -25,6 +27,7 @@ public class UV_Segmentation implements PlugInFilter {
 		IJ.run(imp2, "Analyze Particles...", "size="+size+"  show=Overlay exclude clear add");
 		IJ.resetThreshold(imp2);
 		imp2.show();
+
 		
 	}
 
@@ -38,6 +41,7 @@ public class UV_Segmentation implements PlugInFilter {
 		size = gd.getNextString();
 		return true;
 	}
+
 
 
 
