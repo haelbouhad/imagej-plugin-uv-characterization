@@ -57,16 +57,6 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 	
 	public int setup(String arg, ImagePlus imp)
 	{
-		/*try
-		{
-			if (imp == null) throw (new RuntimeException());
-			this.imp = imp;
-		}
-		catch (RuntimeException e)
-		{
-			IJ.error("this plugin requires an ROI image");
-		}
-		*/
 		
 		if(imp != null){
 			directory = imp.getOriginalFileInfo().directory;
