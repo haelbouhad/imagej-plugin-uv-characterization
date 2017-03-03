@@ -17,15 +17,25 @@ public class UV_Segmentation implements PlugInFilter {
 	@Override
 	public void run(ImageProcessor arg0) {
 		
+		// Get the size of particles (format : "0-Infinity")
 		if(!getParticleSize())
 			return;
 		
+		// Duplicate the current image
 		ImagePlus imp2 = imp.crop();
+		
+		// Set measurment to quantify cells
 		IJ.run("Set Measurements...", "area mean min display add redirect=None decimal=3");
 		IJ.setAutoThreshold(imp2, "Default dark");
+		
+		// Select all the cells except edges
 		IJ.setRawThreshold(imp2, 0, 250, null);
+		
+		// We choose "Overlay" to create a new image, "add" to add output to ROI manager
 		IJ.run(imp2, "Analyze Particles...", "size="+size+"  show=Overlay exclude clear add");
 		IJ.resetThreshold(imp2);
+		
+		// Display result
 		imp2.show();
 
 		

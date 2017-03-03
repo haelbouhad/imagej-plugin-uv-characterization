@@ -48,6 +48,8 @@ public class Immuno_Raising_Edge implements PlugInFilter{
 		imp2.close();
 		IJ.run(imp3, "Smooth", "");
 		IJ.run(imp3, "Smooth", "");
+		IJ.setAutoThreshold(imp3, "Default dark");
+		IJ.setRawThreshold(imp3, 40, 255, null);
 		IJ.run(imp3, "Make Binary", "");
 		imp3.show();
 		
