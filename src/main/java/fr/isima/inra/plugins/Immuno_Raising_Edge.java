@@ -1,4 +1,4 @@
-package fr.isima.inra;
+package fr.isima.inra.plugins;
 
 import ij.IJ;
 import ij.ImagePlus;

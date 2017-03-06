@@ -1,4 +1,4 @@
-package fr.isima.inra;
+package fr.isima.inra.plugins;
 
 import java.awt.AWTEvent;
 import java.awt.Scrollbar;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import fr.isima.inra.classes.Classe;
+import fr.isima.inra.classes.Measurment;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.DialogListener;
@@ -21,8 +23,7 @@ import ij.plugin.frame.RoiManager;
 import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 
-
-public class UV_Characterization implements PlugInFilter, DialogListener {
+public class Cells_Classification implements PlugInFilter, DialogListener {
 	
 	private RoiManager rm;
 	
@@ -45,7 +46,7 @@ public class UV_Characterization implements PlugInFilter, DialogListener {
 
 	private String name;
 
-	public UV_Characterization() {
+	public Cells_Classification() {
 		
 		measurments = new ArrayList<Measurment>();
 		

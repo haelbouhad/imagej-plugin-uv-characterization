@@ -1,4 +1,4 @@
-package fr.isima.inra;
+package fr.isima.inra.classes;
 
 public class Measurment {
 	

@@ -1,4 +1,4 @@
-package fr.isima.inra;
+package fr.isima.inra.plugins;
 
 import ij.IJ;
 import ij.ImagePlus;
@@ -8,7 +8,7 @@ import ij.plugin.ImageCalculator;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
 
-public class UV_Segmentation implements PlugInFilter {
+public class Cells_Segmentation implements PlugInFilter {
 	
 	private ImagePlus imp;
 	

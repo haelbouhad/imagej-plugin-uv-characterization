@@ -1,4 +1,4 @@
-package fr.isima.inra;
+package fr.isima.inra.classes;
 
 import java.util.ArrayList;
 import java.util.List;
