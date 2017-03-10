@@ -117,7 +117,7 @@ public class Cells_Classification implements PlugInFilter, DialogListener {
     		colorClasses();			
 			
     		// Show Result
-    		rm.close();
+    		//rm.close();
     		histo.close();
     		imp.show();
   
@@ -266,8 +266,12 @@ public class Cells_Classification implements PlugInFilter, DialogListener {
 		switch (gd.getTitle()) {
 		
 			case "Segmentation classes":
+				
+				//(java.awt.Panel)gd.getComponent(0);
+				
 				Scrollbar s = (Scrollbar)sliders.get(0);
 				nbClasses = s.getValue();
+				//IJ.log("trigered" + nbClasses); 
 				break;
 				
 			case "Threshold-1":

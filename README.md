@@ -2,7 +2,7 @@
 This is an Maven project implementing an ImageJ plugin for Cell analysis. This project is carried out by two [ISIMA](http://www.isima.fr) students for the laboratory of INRA Clermont-Ferrand.
 
 #### Download 
-To use the plugin download this [jar file](docs/uv-characterization-plugin.jar), and copy it intp images plugins/ directory.
+To use the plugin download this [jar file](docs/), and copy it intp images plugins/ directory.
 
 #### Installation 
 
